@@ -74,5 +74,23 @@
 </main>
         </div>
     </div>
+    </div> 
+    </main>
+
+    <script>
+        function generateDeviceCode() {
+            // Membuat angka random 4 digit
+            const randomDigits = Math.floor(1000 + Math.random() * 9000);
+            const newCode = `IPK-2026-${randomDigits}`;
+
+            // Menampilkan pesan bahwa kode berhasil dibuat
+            alert("Kode Unik Berhasil Dibuat: " + newCode);
+
+            // Menampilkan di console
+            console.log("Generated Code: ", newCode);
+        }
+    </script>
+</body>
+</html>
   </body>
 </html>

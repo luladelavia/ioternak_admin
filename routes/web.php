@@ -1,42 +1,26 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
-// 1. Arahkan halaman awal langsung ke Login
+// Dashboard Utama
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('pages.dashboard.ecommerce');
+})->name('dashboard');
 
-// 2. Semua halaman di dalam group ini hanya bisa dibuka jika sudah Login
-Route::middleware(['auth'])->group(function () {
-    
-    // DASHBOARD (MODUL 1)
-    Route::get('/dashboard', function () {
-        return view('pages.dashboard.ecommerce');
-    })->name('dashboard');
+// MODUL 3: Kelola Device
+Route::get('/devices', function () {
+    // Kita buat data contoh di sini agar tabel isi
+    $devices = [
+        ['id' => '#IPK-001', 'name' => 'IoPeka V1', 'status' => 'Available', 'user' => '-'],
+        ['id' => '#IPK-002', 'name' => 'IoPakan Smart', 'status' => 'Rented', 'user' => 'Budi Santoso'],
+    ];
+    return view('pages.devices.index', compact('devices'));
+})->name('devices.index');
 
-    // ORDERS (MODUL 2)
-    Route::get('/orders', function () {
-        return view('pages.orders.index');
-    })->name('orders.index');
+Route::get('/devices/edit', function () {
+    return view('pages.devices.edit');
+})->name('devices.edit');
 
-    Route::get('/orders/create', function () {
-        return view('pages.orders.create');
-    })->name('orders.create');
-
-    Route::get('/orders/{id}', function () {
-        return view('pages.orders.show');
-    })->name('orders.show');
-
-    // DEVICES (MODUL 3)
-    Route::get('/devices', function () {
-        return view('pages.devices.index');
-    })->name('devices.index');
-
-    // USERS (MODUL 4)
-    Route::get('/users', function () {
-        return view('pages.users.index');
-    })->name('users.index');
-});
-
-require __DIR__.'/auth.php';
+// Jalur Cadangan agar tidak Error Merah
+Route::get('/users', function () { return view('pages.dashboard.ecommerce'); })->name('users.index');
+Route::get('/orders', function () { return view('pages.dashboard.ecommerce'); })->name('orders.index');
+Route::get('/profile', function () { return "Profile"; })->name('profile.edit');
