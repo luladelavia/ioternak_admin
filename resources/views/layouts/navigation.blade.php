@@ -9,6 +9,7 @@
             <ul class="space-y-2">
                 <li><a href="{{ route('dashboard') }}" class="block p-3 rounded text-white hover:bg-gray-800">Dashboard</a></li>
                 <li><a href="{{ route('devices.index') }}" class="block p-3 rounded bg-gray-800 text-white border-l-4 border-white font-bold">Kelola Device</a></li>
+                <li><a href="{{ route('users.index') }}" class="block p-3 rounded bg-gray-800 text-white border-l-4 border-white font-bold">Kelola Pengguna</a></li>
             </ul>
         </div>
     </nav>
