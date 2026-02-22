@@ -6,11 +6,11 @@
     <div class="flex justify-between items-center mb-8">
         <div>
             <h2 class="text-2xl font-bold text-[#2b3674]">Manajemen Pengguna</h2>
-            <p class="text-sm text-gray-500 mt-1">Total Terdaftar: {{ count($users) }} User</p>
+            <p class="text-sm text-gray-500 mt-1">Total Terdaftar: {{ count($users) }} Orang</p>
         </div>
-        <button class="bg-black text-white px-6 py-2 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg flex items-center gap-2">
+        <a href="{{ route('users.create') }}" class="bg-black text-white px-6 py-2 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg flex items-center gap-2">
             <span>+</span> Tambah User
-        </button>
+        </a>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden w-full overflow-x-auto">
@@ -20,9 +20,9 @@
                 <tr>
                     <th class="px-6 py-4">ID User</th>
                     <th class="px-6 py-4">Nama Lengkap</th>
-                    <th class="px-6 py-4">No. WhatsApp / Telepon</th>
+                    <th class="px-6 py-4">Kontak (WhatsApp)</th>
+                    <th class="px-6 py-4">Lokasi & Usaha</th>
                     <th class="px-6 py-4">Status Akun</th>
-                    <th class="px-6 py-4">Asset Disewa</th>
                     <th class="px-6 py-4">Bergabung Pada</th>
                     <th class="px-6 py-4 text-right">Aksi</th>
                 </tr>
@@ -42,53 +42,54 @@
                     {{-- 2. Nama --}}
                     <td class="px-6 py-4">
                         <div class="text-sm font-bold text-gray-700">
-                            {{ data_get($u, 'full_name') ?? 'Nama Tidak Teratur' }}
+                            {{ data_get($u, 'full_name') ?? 'Tanpa Nama' }}
                         </div>
                         <div class="text-xs text-gray-400 mt-0.5">
-                            Customer IoTernak
+                            Customer / Peternak
                         </div>
                     </td>
 
-                    {{-- 3. Phone --}}
+                    {{-- 3. Kontak --}}
                     <td class="px-6 py-4 text-sm text-gray-600">
-                        <div class="flex items-center gap-1">
-                            <span class="text-green-500">📱</span> 
-                            {{ data_get($u, 'phone_number') }}
+                        @if(data_get($u, 'phone_number'))
+                            <div class="flex items-center gap-1">
+                                <span class="text-green-500">📱</span> 
+                                {{ data_get($u, 'phone_number') }}
+                            </div>
+                        @else
+                            <span class="text-gray-300 italic">-</span>
+                        @endif
+                    </td>
+
+                    {{-- 4. Lokasi & Ternak --}}
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col gap-1 text-xs font-medium">
+                            <span class="text-blue-500 bg-blue-50 px-2 py-0.5 rounded w-fit">
+                                Kota: {{ data_get($u, 'city', 'Belum diatur') }}
+                            </span>
+                            <span class="text-orange-500 bg-orange-50 px-2 py-0.5 rounded w-fit">
+                                Ternak: {{ data_get($u, 'livestock_type', '-') }}
+                            </span>
                         </div>
                     </td>
 
-                    {{-- 4. Status Akun (Logic: Aktif jika ada nomor hp) --}}
+                    {{-- 5. Status --}}
                     <td class="px-6 py-4">
                         <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
                             Aktif
                         </span>
                     </td>
 
-                    {{-- 5. Asset Count --}}
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm font-bold text-[#2b3674]">
-                                {{ $u->devices_count ?? 0 }}
-                            </span>
-                            <span class="text-xs text-gray-400">Unit Device</span>
-                        </div>
-                    </td>
-
-                    {{-- 6. Created At --}}
+                    {{-- 6. Bergabung Pada --}}
                     <td class="px-6 py-4 text-xs text-gray-500">
                         {{ substr(data_get($u, 'created_at'), 0, 10) }}
                     </td>
 
-                    {{-- 7. Action --}}
+                    {{-- 7. Aksi --}}
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end gap-3">
-                            <a href="#" class="text-blue-600 font-bold hover:text-blue-800 text-sm transition">
-                                Edit
-                            </a>
-                            <button class="text-red-500 font-bold hover:text-red-700 text-sm transition">
-                                Hapus
-                            </button>
-                        </div>
+                        <a href="{{ route('users.edit', $u->user_id) }}" class="text-blue-600 font-bold hover:text-blue-800 text-sm transition">
+                            Edit
+                        </a>
                     </td>
                 </tr>
                 @empty
@@ -96,7 +97,7 @@
                     <td colspan="7" class="px-6 py-12 text-center text-gray-400 bg-gray-50">
                         <div class="flex flex-col items-center justify-center">
                             <span class="text-2xl mb-2">👥</span>
-                            <p>Bel_um ada data pengguna terdaftar.</p>
+                            <p>Belum ada data pengguna di database.</p>
                         </div>
                     </td>
                 </tr>

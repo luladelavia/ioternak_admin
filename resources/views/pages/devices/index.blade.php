@@ -101,9 +101,9 @@
                     </td>
 
                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-blue-600 font-bold hover:text-blue-800 hover:underline text-sm transition">
-                            Edit
-                        </a>
+                    <a href="{{ route('devices.edit', $d->device_id) }}" class="text-blue-600 font-bold hover:text-blue-800...">
+    Edit
+</a>
                     </td>
                 </tr>
                 @empty

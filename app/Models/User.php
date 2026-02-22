@@ -16,9 +16,19 @@ class User extends Authenticatable
     // Matikan timestamps default Laravel jika hanya menggunakan created_at dari DB
     public $timestamps = false;
 
+    // Tambahkan field baru sesuai form
     protected $fillable = [
         'full_name',
-        'phone_number',
+        'birth_date',       // Tanggal Lahir
+        'phone_number',     // Nomor WhatsApp
+        'password',         // Password
+        'address',          // Alamat Lengkap
+        'province',         // Provinsi
+        'city',             // Kota/Kabupaten
+        'district',         // Kecamatan
+        'postal_code',      // Kode Pos
+        'livestock_type',   // Jenis Ternak
+        'population',       // Populasi Ternak
         'created_at'
     ];
 

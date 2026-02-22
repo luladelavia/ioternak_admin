@@ -1,44 +1,69 @@
-@extends('welcome')
+@extends('layouts.app')
 
 @section('content')
-<div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-    <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div class="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-            <h3 class="font-medium text-black dark:text-white">Tambah User / Penyewa Baru</h3>
+<div class="ml-64 p-8 bg-[#f4f7fe] min-h-screen">
+    
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h2 class="text-2xl font-bold text-[#2b3674]">Tambah User Baru</h2>
+            <p class="text-sm text-gray-500 mt-1">Silakan lengkapi form pendaftaran pengguna di bawah ini.</p>
         </div>
-        <form action="#" class="p-6.5">
-            <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                <div class="w-full xl:w-1/2">
-                    <label class="mb-2.5 block text-black dark:text-white">Nama Lengkap</label>
-                    <input type="text" placeholder="Masukkan nama" class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary" />
-                </div>
-                <div class="w-full xl:w-1/2">
-                    <label class="mb-2.5 block text-black dark:text-white">Nomor WhatsApp</label>
-                    <input type="number" placeholder="628..." class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary" />
-                </div>
-            </div>
+        <a href="{{ route('users.index') }}" class="bg-white text-gray-700 border border-gray-200 px-6 py-2 rounded-xl font-bold hover:bg-gray-50 transition shadow-sm flex items-center gap-2">
+            <span>←</span> Kembali ke Index
+        </a>
+    </div>
 
-            <div class="mb-4.5">
-                <label class="mb-2.5 block text-black dark:text-white">Alamat Lengkap</label>
-                <textarea rows="3" placeholder="Alamat rumah/kandang" class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary"></textarea>
-            </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+        <form action="{{ route('users.store') }}" method="POST">
+            @csrf
 
-            <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                <div class="w-full xl:w-1/2">
-                    <label class="mb-2.5 block text-black dark:text-white">Jenis Ternak</label>
-                    <select class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary">
-                        <option value="broiler">Ayam Broiler</option>
-                        <option value="petelur">Ayam Petelur</option>
-                        <option value="puyuh">Burung Puyuh</option>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap</label>
+                    <input type="text" name="full_name" value="{{ old('full_name') }}" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">No. WhatsApp</label>
+                    <input type="number" name="phone_number" value="{{ old('phone_number') }}" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                    <input type="password" name="password" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Tanggal Lahir</label>
+                    <input type="date" name="birth_date" value="{{ old('birth_date') }}" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm text-gray-600">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Alamat Lengkap</label>
+                    <textarea name="address" rows="2" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm">{{ old('address') }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Kota / Kabupaten</label>
+                    <input type="text" name="city" value="{{ old('city') }}" placeholder="Contoh: Boyolali" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Jenis Ternak</label>
+                    <select name="livestock_type" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#2b3674] outline-none transition text-sm">
+                        <option value="">-- Pilih Jenis --</option>
+                        <option value="Ayam Broiler">Ayam Broiler</option>
+                        <option value="Ayam Petelur">Ayam Petelur</option>
+                        <option value="Sapi">Sapi</option>
                     </select>
                 </div>
-                <div class="w-full xl:w-1/2">
-                    <label class="mb-2.5 block text-black dark:text-white">Populasi (Ekor)</label>
-                    <input type="number" placeholder="Contoh: 1000" class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary" />
-                </div>
             </div>
 
-            <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-white">Simpan Data User</button>
+            <div class="mt-8 flex justify-end">
+                <button type="submit" class="bg-[#2b3674] text-white px-8 py-2.5 rounded-xl font-bold hover:bg-blue-900 transition shadow-lg">
+                    Simpan User Baru
+                </button>
+            </div>
         </form>
     </div>
 </div>

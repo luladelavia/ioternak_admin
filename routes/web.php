@@ -16,19 +16,17 @@ Route::get('/', function () {
 })->name('dashboard');
 
 // 2. MODUL DEVICE (KONEKSI DATABASE ASLI)
-// Kita pakai Controller, JANGAN pakai function() agar data dari PostgreSQL masuk.
+// Rute untuk menampilkan semua device
 Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
 
-// Halaman Edit (Sementara pakai view statis dulu tidak apa-apa)
-Route::get('/devices/edit', function () {
-    return view('pages.devices.edit');
-})->name('devices.edit');
+// Rute untuk menampilkan halaman form edit device (Berdasarkan ID)
+Route::get('/devices/{id}/edit', [DeviceController::class, 'edit'])->name('devices.edit');
+
+// Rute untuk memproses update data ke database
+Route::put('/devices/{id}', [DeviceController::class, 'update'])->name('devices.update');
+
 
 // 3. Jalur Cadangan (Placeholder) agar Menu Samping Tidak Error
-Route::get('/users', function () { 
-    return view('pages.dashboard.ecommerce'); 
-})->name('users.index');
-
 Route::get('/orders', function () { 
     return view('pages.dashboard.ecommerce'); 
 })->name('orders.index');
@@ -37,20 +35,28 @@ Route::get('/profile', function () {
     return "Halaman Profile"; 
 })->name('profile.edit');
 
+// 4. MODUL USERS
 Route::prefix('users')->group(function () {
-    // Menampilkan daftar user dari PostgreSQL
+    
+    // Menampilkan daftar user
     Route::get('/', [UserController::class, 'index'])->name('users.index');
     
-    // Placeholder untuk fitur User lainnya
-    Route::get('/create', function () { 
-        return "Halaman Tambah User"; 
-    })->name('users.create');
+    // Menampilkan Form Tambah User
+    Route::get('/create', [UserController::class, 'create'])->name('users.create');
     
-    Route::get('/{id}/edit', function ($id) { 
-        return "Halaman Edit User ID: " . $id; 
-    })->name('users.edit');
+    // Memproses Simpan User Baru ke Database (Method POST)
+    Route::post('/', [UserController::class, 'store'])->name('users.store');
     
+    // Menampilkan Form Edit User
+    Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    
+    // Memproses Update Data User ke Database (Method PUT)
+    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+    
+    // Placeholder untuk Hapus User (Karena belum ada di Controller)
     Route::delete('/{id}', function ($id) { 
         return "Proses Hapus User ID: " . $id; 
     })->name('users.destroy');
+    
 });
+    
