@@ -8,7 +8,7 @@
             <h2 class="text-2xl font-bold text-[#2b3674]">Inventaris Asset</h2>
             <p class="text-sm text-gray-500 mt-1">Total Devices: {{ count($devices) }} Unit</p>
         </div>
-        <button class="bg-black text-white px-6 py-2 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg flex items-center gap-2">
+        <button class="bg-[#052917] text-white px-6 py-2 rounded-xl font-bold hover:bg-[#0a4d2c] transition shadow-lg flex items-center gap-2">
             <span>+</span> Generate Kode
         </button>
     </div>

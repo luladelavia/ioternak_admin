@@ -26,10 +26,14 @@ Route::get('/devices/{id}/edit', [DeviceController::class, 'edit'])->name('devic
 Route::put('/devices/{id}', [DeviceController::class, 'update'])->name('devices.update');
 
 
-// 3. Jalur Cadangan (Placeholder) agar Menu Samping Tidak Error
-Route::get('/orders', function () { 
-    return view('pages.dashboard.ecommerce'); 
-})->name('orders.index');
+use App\Http\Controllers\OrderController;
+
+// 3. MODUL ORDERS
+Route::prefix('orders')->group(function () {
+    Route::get('/', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/', [OrderController::class, 'store'])->name('orders.store');
+});
 
 Route::get('/profile', function () { 
     return "Halaman Profile"; 

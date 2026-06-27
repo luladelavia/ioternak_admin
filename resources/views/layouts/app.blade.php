@@ -34,15 +34,3 @@
         </div>
     </body>
 </html>
-<li>
-    <a href="{{ route('dashboard') }}" class="..."> Dashboard</a>
-</li>
-<li>
-    <a href="{{ route('orders.index') }}" class="..."> Modul Orders</a>
-</li>
-<li>
-    <a href="{{ route('devices.index') }}" class="..."> Modul Devices</a>
-</li>
-<li>
-    <a href="{{ route('users.index') }}" class="..."> Data Pengguna</a>
-</li>

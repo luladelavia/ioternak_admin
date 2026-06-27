@@ -13,15 +13,15 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::with(['user', 'device'])->get();
-        return view('orders.index', compact('orders'));
+        return view('pages.orders.index', compact('orders'));
     }
 
     // 2. Halaman Tambah Order
     public function create()
     {
         $users = User::all();
-        $devices = Device::where('status', 'Available')->get();
-        return view('orders.create', compact('users', 'devices'));
+        $devices = Device::whereNull('owned_by')->get(); // Only available devices
+        return view('pages.orders.create', compact('users', 'devices'));
     }
 
     // 3. Simpan Order (Kalkulasi Otomatis)

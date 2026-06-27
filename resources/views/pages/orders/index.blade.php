@@ -1,62 +1,105 @@
-@extends('welcome')
+@extends('layouts.app')
 
 @section('content')
-<div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-title-md2 font-bold text-black dark:text-white">Inventaris Device (Assets)</h2>
-        <button class="inline-flex items-center justify-center rounded-md bg-primary py-3 px-6 text-white hover:bg-opacity-90">
-            + Generate Device ID Baru
-        </button>
-    </div>
-
-    <div class="mb-4 flex flex-wrap gap-3">
-        <input type="text" placeholder="Cari Device ID..." class="rounded border border-stroke py-2 px-4 outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark">
-        <select class="rounded border border-stroke py-2 px-4 outline-none dark:border-strokedark dark:bg-boxdark">
-            <option value="">Semua Status</option>
-            <option value="available">Available</option>
-            <option value="rented">Rented</option>
-            <option value="maintenance">Maintenance</option>
-        </select>
-    </div>
-
-    <div class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div class="max-w-full overflow-x-auto">
-            <table class="w-full table-auto">
-                <thead>
-                    <tr class="bg-gray-2 text-left dark:bg-meta-4">
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">Device ID</th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">Tipe</th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">Status</th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">Penyewa Saat Ini</th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-[#eee] dark:border-strokedark">
-                        <td class="py-5 px-4"><p class="font-bold">IOP-9921</p></td>
-                        <td class="py-5 px-4"><p>IoPeka</p></td>
-                        <td class="py-5 px-4">
-                            <span class="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">Rented</span>
-                        </td>
-                        <td class="py-5 px-4"><p class="text-primary underline">Budi Santoso</p></td>
-                        <td class="py-5 px-4">
-                            <button class="text-primary hover:underline">Detail</button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-[#eee] dark:border-strokedark">
-                        <td class="py-5 px-4"><p class="font-bold">IOP-9922</p></td>
-                        <td class="py-5 px-4"><p>IoPakan</p></td>
-                        <td class="py-5 px-4">
-                            <span class="inline-flex rounded-full bg-blue-500 bg-opacity-10 py-1 px-3 text-sm font-medium text-blue-500">Available</span>
-                        </td>
-                        <td class="py-5 px-4"><p class="text-gray-400">- Di Gudang -</p></td>
-                        <td class="py-5 px-4">
-                            <button class="text-primary hover:underline">Detail</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="ml-64 p-8 bg-[#f4f7fe] min-h-screen">
+    
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h2 class="text-2xl font-bold text-[#2b3674]">Daftar Transaksi Order</h2>
+            <p class="text-sm text-gray-500 mt-1">Total Order: {{ count($orders) }} Transaksi</p>
         </div>
+        <a href="{{ route('orders.create') }}" class="bg-[#052917] text-white px-6 py-2 rounded-xl font-bold hover:bg-[#0a4d2c] transition shadow-lg flex items-center gap-2">
+            <span>+</span> Tambah Order Baru
+        </a>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden w-full overflow-x-auto">
+        <table class="w-full text-left whitespace-nowrap">
+            <thead class="bg-gray-50 border-b border-gray-100 text-gray-400 text-xs font-bold uppercase">
+                <tr>
+                    <th class="px-6 py-4">Kode Order</th>
+                    <th class="px-6 py-4">Penyewa (User)</th>
+                    <th class="px-6 py-4">Device</th>
+                    <th class="px-6 py-4">Durasi</th>
+                    <th class="px-6 py-4">Total Tagihan</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4">Tanggal Transaksi</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-50">
+                @forelse($orders as $o)
+                <tr class="hover:bg-gray-50 transition">
+                    {{-- 1. Kode Order --}}
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-[#2b3674] font-mono text-sm">
+                            {{ data_get($o, 'order_code') }}
+                        </div>
+                    </td>
+
+                    {{-- 2. Penyewa --}}
+                    <td class="px-6 py-4">
+                        <div class="text-sm font-bold text-gray-700">
+                            {{ data_get($o, 'user.full_name') ?? 'User ID: ' . data_get($o, 'user_id') }}
+                        </div>
+                        <div class="text-xs text-gray-400 mt-0.5">
+                            {{ data_get($o, 'user.phone_number') ?? '-' }}
+                        </div>
+                    </td>
+
+                    {{-- 3. Device --}}
+                    <td class="px-6 py-4 text-sm text-gray-600">
+                        <div class="font-semibold text-gray-700">
+                            {{ data_get($o, 'device.device_name') ?? 'Device ID: ' . data_get($o, 'device_id') }}
+                        </div>
+                        <div class="text-xs text-gray-400">
+                            Tipe: {{ data_get($o, 'device.type') ?? '-' }}
+                        </div>
+                    </td>
+
+                    {{-- 4. Durasi --}}
+                    <td class="px-6 py-4 text-sm text-gray-700 font-semibold">
+                        {{ data_get($o, 'duration') }} Bulan
+                    </td>
+
+                    {{-- 5. Total Tagihan --}}
+                    <td class="px-6 py-4 text-sm font-bold text-[#2b3674]">
+                        Rp {{ number_format(data_get($o, 'total_bill'), 0, ',', '.') }}
+                    </td>
+
+                    {{-- 6. Status --}}
+                    <td class="px-6 py-4">
+                        @php
+                            $status = data_get($o, 'status', 'Pending');
+                            $badgeClass = 'bg-orange-100 text-orange-600';
+                            if (strtolower($status) == 'success') {
+                                $badgeClass = 'bg-green-100 text-green-600';
+                            } elseif (strtolower($status) == 'failed') {
+                                $badgeClass = 'bg-red-100 text-red-600';
+                            }
+                        @endphp
+                        <span class="{{ $badgeClass }} px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                            {{ $status }}
+                        </span>
+                    </td>
+
+                    {{-- 7. Tanggal --}}
+                    <td class="px-6 py-4 text-xs text-gray-500">
+                        {{ substr(data_get($o, 'created_at'), 0, 10) }}
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="px-6 py-12 text-center text-gray-400 bg-gray-50">
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="text-2xl mb-2">📦</span>
+                            <p>Belum ada data transaksi order.</p>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </div>
 @endsection
