@@ -20,7 +20,8 @@ class OrderController extends Controller
     public function create()
     {
         $users = User::all();
-        $devices = Device::whereNull('owned_by')->get(); // Only available devices
+        // $devices = Device::whereNull('owned_by')->get(); // Only available devices
+        $devices = Device::all(); // Fetch all devices for testing purposes
         return view('pages.orders.create', compact('users', 'devices'));
     }
 
