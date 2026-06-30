@@ -37,7 +37,7 @@ class OrderController extends Controller
             'device_id' => $request->device_id,
             'duration' => $request->duration,
             'total_bill' => $total_bill,
-            'status' => 'Active',
+            'status' => 'Success',
         ]);
 
         return redirect()->route('orders.index')->with('success', 'Order berhasil dibuat!');
